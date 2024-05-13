@@ -377,7 +377,7 @@ $$ 140\space млн.\cdot 2=280\space млн.\space пользователей $
 
 **USER**
 
-$ 16\space байт\text{ (uuid - id)} + 10\space байт\text{ (text - username)} + 40\space байт\text{ (text - email)} + 10\space байт\text{ (bytea - salt)} + 32\space байта\text{ (bytea - password)} + 500\space байт\text{ (text - description)} + 60\space байт\text{ (text - avatar url)} + 8\space байт\text{(timestamp - created\_at)}=676\space байт/пользователя $
+$$ 16\space байт\text{ (uuid - id)} + 10\space байт\text{ (text - username)} + 40\space байт\text{ (text - email)} + 10\space байт\text{ (bytea - salt)} + 32\space байта\text{ (bytea - password)} + 500\space байт\text{ (text - description)} + 60\space байт\text{ (text - avatar url)} + 8\space байт\text{(timestamp - created\_at)}=676\space байт/пользователя $$
 
 Общий объем данных составит
 
@@ -385,7 +385,7 @@ $$ 676\space байт\cdot 280\space млн. \approx 177\space Гбайт $$
 
 **STREAM_RECORD**
 
-$ 16\space байт\text{ (uuid - id)} + 16\space байт\text{ (uuid - author\_id)} + 60\space байт\text{ (text - record\_url)}=92\space байт/стрим $
+$$ 16\space байт\text{ (uuid - id)} + 16\space байт\text{ (uuid - author\_id)} + 60\space байт\text{ (text - record\_url)}=92\space байт/стрим $$
 
 Из [раздела 2](#2-расчет-нагрузки) имеем 70 млн часов стримов в месяц. Если средний стрим длится 1 ч, то общее число стримов составляет $ 70\space млн. $
 В таком случае:
@@ -396,7 +396,7 @@ $$ 92\space байт\cdot 70\space млн. \approx 6\space Гбайт $$
 
 **STREAM_RECORD_INFO**
 
-$ 16\space байт\text{ (uuid - id)} + 16\space байт\text{(uuid - stream\_record\_id)} + 50\space байт\text{ (text - title)} + 500\space байт\text{ (text - description)} + 8\space байт\text{ (timestamp - created\_at)}=590\space байт/стрим $
+$$ 16\space байт\text{ (uuid - id)} + 16\space байт\text{(uuid - stream\_record\_id)} + 50\space байт\text{ (text - title)} + 500\space байт\text{ (text - description)} + 8\space байт\text{ (timestamp - created\_at)}=590\space байт/стрим $$
 
 Итого:
 
@@ -404,7 +404,7 @@ $$ 590\space байт\cdot 70\space млн. \approx 39\space Гбайт $$
 
 **CHAT_MESSAGE**
 
-$ 16\space байт\text{ (uuid - id)} + 16\space байт\text{ (uuid - stream\_record\_id)} + 16\space байт\text{ (uuid - author\_id)} + 400\space байт\text{ (text - message)} + 8\space байт\text{ (timestamp - created\_at)}=456\space байт/сообщение $
+$$ 16\space байт\text{ (uuid - id)} + 16\space байт\text{ (uuid - stream\_record\_id)} + 16\space байт\text{ (uuid - author\_id)} + 400\space байт\text{ (text - message)} + 8\space байт\text{ (timestamp - created\_at)}=456\space байт/сообщение $$
 
 При [общем объеме](#2-расчет-нагрузки) сообщений в $ 4\space млрд./мес $ необходимо хранилище на
 
@@ -412,7 +412,7 @@ $$ 456\space байт\cdot 4\space млрд. \approx 1.7\space Тбайт $$
 
 **VIEW**
 
-$ 16\space байт\text{ (uuid - viewer\_id)} + 16\space байт\text{ (uuid - stream\_record\_id)} + 8\space байт\text{ (timestamp - created\_at)} + 8\space байт\text{ (timestamp - updated\_at)}=48\space байт/запись $
+$$ 16\space байт\text{ (uuid - viewer\_id)} + 16\space байт\text{ (uuid - stream\_record\_id)} + 8\space байт\text{ (timestamp - created\_at)} + 8\space байт\text{ (timestamp - updated\_at)}=48\space байт/запись $$
 
 Пусть средний пользователь заходит на 1 стрим в день. Тогда он заходит на 30 стримов за месяц. Тогда за месяц мы получим записей на
 
@@ -420,7 +420,7 @@ $$ 30\cdot 48\space байт\cdot 140\space млн. \approx 188\space Гбайт
 
 **SUBSCRIPTION**
 
-$ 16\space байт\text{ (uuid - subscriber\_id)} + 16\space байт\text{ (uuid - author\_id)} + 8\space байт\text{ (timestamp - created\_at)}=40\space байт/запись $
+$$ 16\space байт\text{ (uuid - subscriber\_id)} + 16\space байт\text{ (uuid - author\_id)} + 8\space байт\text{ (timestamp - created\_at)}=40\space байт/запись $$
 
 Согласно статистике, у Twitch имеется около 15 миллионов стримеров. При этом только у 1% из них онлайн выше 50 человек. Возьмем 1% от 15 миллионов и положим, что в среднем у такого стримера 1000 подписчиков. Полученное суммарное число подписчиков и возьмем за количество записей в таблице SUBSCRIPTION:
 
@@ -428,7 +428,7 @@ $$ \frac{15\space млн.}{100}\cdot 1000\cdot 40\space \approx 5.6\space Гба
 
 **SESSION**
 
-$ 16\space байт\text{ (uuid - user\_id)} + 16\space байт\text{ (uuid - session\_id)} + 8\space байт\text{ (timestamp - created\_at)}=40\space байт/сессию $
+$$ 16\space байт\text{ (uuid - user\_id)} + 16\space байт\text{ (uuid - session\_id)} + 8\space байт\text{ (timestamp - created\_at)}=40\space байт/сессию $$
 
 Показатель DAU у Twitch составляет 30 млн. человек. Пусть каждый из них имеет по две сессии: на телефоне и компьютере. Тогда суммарный объем занимаемой памяти:
 
